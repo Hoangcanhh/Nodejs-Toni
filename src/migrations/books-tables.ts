@@ -21,7 +21,7 @@ export class CreateBooksTable1622123345678 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'publishedYear',
+            name: 'publication_date',
             type: 'int',
           },
           {

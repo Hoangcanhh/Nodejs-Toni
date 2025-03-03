@@ -1,26 +1,37 @@
-import { Body, Controller, Get, Patch, Post } from "@nestjs/common";
-import { usersService } from "./users.service";
-import { Users } from "./users.entity";
-import { UsersDto } from "./users.dto";
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { UserDto } from './user.dto';
+import { Users } from './users.entity';
 
-@Controller()
-export class usersController {
-    constructor(private readonly usersService : usersService) {}
+@Controller('/users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
 
-    @Get()
-    findAll(): Promise<Users[]>{
-        return this.usersService.findAll();
-    }
+  @Get()
+  findAll(): Promise<UserDto[]> {
+    return this.usersService.findAll();
+  }
 
-    @Get(':id')
-    findOne(name : string): Promise<Users | undefined>{
-        return this.usersService.findOne(name);
-    }
+  @Get('/usersid')
+  findOne(username: string): Promise<UserDto | undefined> {
+    return this.usersService.findOne(username);
+  }
 
-    @Post()
-    create(@Body() UsersDto : UsersDto){
-        return this.usersService.create(UsersDto);{
-    }
+  @Post('/createUsers')
+  create(@Body() UserDto: UserDto): Promise<UserDto> {
+    return this.usersService.create(UserDto);
+  }
 
-}
+  @Patch('/usersid')
+  update(
+    userid: number,
+    @Body() UserDto: UserDto,
+  ): Promise<UserDto | undefined> {
+    return this.usersService.update(userid, UserDto);
+  }
+
+  @Post('/validateUser')
+  validateUser(username: string, pass: string): Promise<any> {
+    return this.usersService.validateUser(username, pass);
+  }
 }

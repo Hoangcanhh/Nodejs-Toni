@@ -1,20 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Books {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    title: string;
+  @Column()
+  title: string;
 
-    @Column()
-    author: string;
+  @Column()
+  author: string;
 
-    @Column()
-    publication_date: Date;
+  @Column()
+  publication_date: Date;
 
-    @Column()
-    available: boolean;
-    
+  @Column()
+  available: boolean;
 }
