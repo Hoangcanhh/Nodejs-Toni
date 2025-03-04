@@ -12,6 +12,8 @@ import { BooksService } from './books.service';
 import { BooksDto } from './books.dto';
 import { Books } from './books.entity';
 import { JwtAuthGuard } from '../auth/jwt_auth.guard';
+import { time } from 'console';
+import { title } from 'process';
 
 @Controller('books')
 export class BooksController {
@@ -30,7 +32,7 @@ export class BooksController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.booksService.findOne(id);
+    return this.booksService.findOne(title);
   }
   @UseGuards(JwtAuthGuard)
   @Patch(':id')

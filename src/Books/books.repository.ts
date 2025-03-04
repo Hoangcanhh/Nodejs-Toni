@@ -15,12 +15,12 @@ export class BooksRepository {
     return this.booksRepository.find();
   }
 
-  async findOne(id: number): Promise<Books | undefined> {
-    return this.booksRepository.findOne({ where: { id } });
+  async findOne(title: string): Promise<BooksDto | undefined> {
+    return this.booksRepository.findOne({ where: { title } });
   }
 
-  async create(books: Books): Promise<Books> {
-    const book = this.booksRepository.create(books); // Tạo một thực thể từ DTO
+  async create(booksDto: BooksDto): Promise<BooksDto> {
+    const book = this.booksRepository.create(booksDto); // Tạo một thực thể từ DTO
     return this.booksRepository.save(book);
   }
 
@@ -29,7 +29,8 @@ export class BooksRepository {
     return this.booksRepository.findOne({ where: { id } });
   }
 
-  async delete(id: number): Promise<void> {
-    await this.booksRepository.delete(id);
+  async delete(title: string): Promise<BooksDto | undefined> {
+    await this.booksRepository.delete(title);
+    return this.findOne(title);
   }
 }

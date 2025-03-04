@@ -11,7 +11,7 @@ export class BooksDto {
 
   @IsInt()
   @IsNotEmpty()
-  publication_date: number;
+  publication_date: Date;
 
   @IsBoolean()
   @IsNotEmpty()

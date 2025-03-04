@@ -7,8 +7,8 @@ import { UserDto } from './user.dto';
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectRepository(UserDto)
-    private userRepository: Repository<UserDto>,
+    @InjectRepository(Users)
+    private userRepository: Repository<Users>,
   ) {}
 
   async findAllUsers() {

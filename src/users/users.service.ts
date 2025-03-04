@@ -9,7 +9,6 @@ import { UserRepository } from './users.repository';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
 
@@ -21,21 +20,21 @@ export class UsersService {
     return this.userRepository.findOneUser(username);
   }
 
-  async create(UserDto: UserDto): Promise<UserDto> {
-    const hashedPassword = await bcrypt.hash(UserDto.password, 10);
+  async create(userDto: UserDto): Promise<UserDto> {
+    const hashedPassword = await bcrypt.hash(userDto.password, 10);
     await this.userRepository.createUser({
-        ...UserDto,
+        ...userDto,
         password: hashedPassword,
     });
-    return this.userRepository.createUser(UserDto);
+    return this.userRepository.createUser(userDto);
   }
 
-  async update(userid : number, user: UserDto): Promise<UserDto | undefined> {
-    return this.userRepository.updateUser(userid, user);
+  async update(userId : number, user: UserDto): Promise<UserDto | undefined> {
+    return this.userRepository.updateUser(userId, user);
   }
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.userRepository.findOneUser(username);
+  async validateUser(userName: string, pass: string): Promise<any> {
+    const user = await this.userRepository.findOneUser(userName);
     if (!user) {
       return null;
     }
