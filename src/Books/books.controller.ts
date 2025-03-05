@@ -19,7 +19,7 @@ export class BooksController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createBook: Books) {
+  create(@Body() createBook: BooksDto) {
     return this.booksService.create(createBook);
   }
   @UseGuards(JwtAuthGuard)
@@ -40,8 +40,6 @@ export class BooksController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   delete(@Param('id') id: number, @Body('author') author: string) {
-    {
       return this.booksService.delete(id, author);
-    }
   }
 }

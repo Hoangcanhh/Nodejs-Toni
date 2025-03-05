@@ -1,7 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Users } from './users.entity';
 import { UserDto } from './user.dto';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from './users.repository';
@@ -28,15 +25,11 @@ export class UsersService {
   }
 
   async update(userId: number, user: UserDto): Promise<UserDto | undefined> {
-    return this.userRepository.updateUser(userId, user);
-  }
-
-  async validateUser(userName: string, pass: string): Promise<any> {
-    const user = await this.userRepository.findOneUser(userName);
-    if (!user) {
-      return null;
+    //validate user
+    const existingUser = await this.userRepository.findOneUser(user.username);
+    if (!existingUser) {
+      throw new Error('User not found');
     }
-    const match = await bcrypt.compare(pass, user.password);
-    return match ? user : null;
+    return this.userRepository.updateUser(userId, user);
   }
 }

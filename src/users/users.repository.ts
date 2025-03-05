@@ -33,12 +33,6 @@ export class UserRepository {
     userid: number,
     UserDto: UserDto,
   ): Promise<UserDto | undefined> {
-    const existingUser = await this.userRepository.findOne({
-      where: { username: UserDto.username },
-    });
-    if (existingUser) {
-      throw new Error('User already exists');
-    }
     await this.userRepository.update(userid, UserDto);
     return this.userRepository.findOne({
       where: { username: UserDto.username },

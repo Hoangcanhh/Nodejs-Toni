@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from './user.dto';
-import { Users } from './users.entity';
 
 @Controller('/users')
 export class UsersController {
@@ -13,25 +12,20 @@ export class UsersController {
   }
 
   @Get('/usersid')
-  findOne(username: string): Promise<UserDto | undefined> {
-    return this.usersService.findOne(username);
+  findOne(userName: string): Promise<UserDto | undefined> {
+    return this.usersService.findOne(userName);
   }
 
   @Post('/createUsers')
-  create(@Body() UserDto: UserDto): Promise<UserDto> {
-    return this.usersService.create(UserDto);
+  create(@Body() userDto: UserDto): Promise<UserDto> {
+    return this.usersService.create(userDto);
   }
 
-  @Patch('/usersid')
+  @Patch('/updateUsers')
   update(
     userid: number,
-    @Body() UserDto: UserDto,
+    @Body() userDto: UserDto,
   ): Promise<UserDto | undefined> {
-    return this.usersService.update(userid, UserDto);
-  }
-
-  @Post('/validateUser')
-  validateUser(username: string, pass: string): Promise<any> {
-    return this.usersService.validateUser(username, pass);
+    return this.usersService.update(userid, userDto);
   }
 }
