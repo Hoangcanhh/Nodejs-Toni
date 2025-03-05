@@ -40,8 +40,10 @@ export class BooksController {
     return this.booksService.update(id, updateBook);
   }
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.booksService.delete(id);
+  @Delete(':title')
+  delete(@Param('title') title: string, @Body('author') author: string) {
+    {
+      return this.booksService.delete(title, author);
+    }
   }
 }

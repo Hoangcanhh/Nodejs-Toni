@@ -9,13 +9,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    // TypeOrmModule.forRoot({
-    //   type: 'sqlite',
-    //   database: 'library.db',
-    //   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    //   synchronize: true,
-    // }),
-    MongooseModule.forRoot('mongodb://localhost/nest'),
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'library.db',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
     BooksModule,
     AuthModule,
     UsersModule,

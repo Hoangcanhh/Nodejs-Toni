@@ -20,11 +20,28 @@ export class UserRepository {
   }
 
   async createUser(UserDto: UserDto): Promise<UserDto> {
+    const existingUser = await this.userRepository.findOne({
+      where: { username: UserDto.username },
+    });
+    if (existingUser) {
+      throw new Error('User already exists');
+    }
     return this.userRepository.save(UserDto);
   }
 
-  async updateUser(userid: number ,UserDto: UserDto): Promise<UserDto | undefined> {
-    await this.userRepository.update(userid ,UserDto);
-    return this.userRepository.findOne({ where: { username: UserDto.username } });
+  async updateUser(
+    userid: number,
+    UserDto: UserDto,
+  ): Promise<UserDto | undefined> {
+    const existingUser = await this.userRepository.findOne({
+      where: { username: UserDto.username },
+    });
+    if (existingUser) {
+      throw new Error('User already exists');
+    }
+    await this.userRepository.update(userid, UserDto);
+    return this.userRepository.findOne({
+      where: { username: UserDto.username },
+    });
   }
 }
