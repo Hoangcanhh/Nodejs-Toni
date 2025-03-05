@@ -8,9 +8,7 @@ import { UserRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private userRepository: UserRepository,
-  ) {}
+  constructor(private userRepository: UserRepository) {}
 
   async findAll(): Promise<UserDto[]> {
     return this.userRepository.findAllUsers();
@@ -23,13 +21,13 @@ export class UsersService {
   async create(userDto: UserDto): Promise<UserDto> {
     const hashedPassword = await bcrypt.hash(userDto.password, 10);
     await this.userRepository.createUser({
-        ...userDto,
-        password: hashedPassword,
+      ...userDto,
+      password: hashedPassword,
     });
     return this.userRepository.createUser(userDto);
   }
 
-  async update(userId : number, user: UserDto): Promise<UserDto | undefined> {
+  async update(userId: number, user: UserDto): Promise<UserDto | undefined> {
     return this.userRepository.updateUser(userId, user);
   }
 

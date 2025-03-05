@@ -15,8 +15,8 @@ export class BooksRepository {
     return this.booksRepository.find();
   }
 
-  async findOne(title: string): Promise<BooksDto | undefined> {
-    return this.booksRepository.findOne({ where: { title } });
+  async findOne(id: number): Promise<BooksDto | undefined> {
+    return this.booksRepository.findOne({ where: { id } });
   }
 
   async create(booksDto: BooksDto): Promise<BooksDto> {
@@ -29,8 +29,8 @@ export class BooksRepository {
     return this.booksRepository.findOne({ where: { id } });
   }
 
-  async delete(title: string): Promise<BooksDto | undefined> {
-    await this.booksRepository.delete(title);
-    return this.findOne(title);
+  async delete(id: number): Promise<BooksDto | undefined> {
+    await this.booksRepository.delete(id);
+    return this.findOne(id);
   }
 }

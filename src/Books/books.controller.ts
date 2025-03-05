@@ -12,8 +12,6 @@ import { BooksService } from './books.service';
 import { BooksDto } from './books.dto';
 import { Books } from './books.entity';
 import { JwtAuthGuard } from '../auth/jwt_auth.guard';
-import { time } from 'console';
-import { title } from 'process';
 
 @Controller('books')
 export class BooksController {
@@ -32,7 +30,7 @@ export class BooksController {
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.booksService.findOne(title);
+    return this.booksService.findOne(id);
   }
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
@@ -40,10 +38,10 @@ export class BooksController {
     return this.booksService.update(id, updateBook);
   }
   @UseGuards(JwtAuthGuard)
-  @Delete(':title')
-  delete(@Param('title') title: string, @Body('author') author: string) {
+  @Delete(':id')
+  delete(@Param('id') id: number, @Body('author') author: string) {
     {
-      return this.booksService.delete(title, author);
+      return this.booksService.delete(id, author);
     }
   }
 }
