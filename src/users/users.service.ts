@@ -25,6 +25,10 @@ export class UsersService {
   }
 
   async update(userId: number, user: UserDto): Promise<UserDto | undefined> {
+    //validate userDto
+    if (!user) {
+      throw new Error('User not found');
+    }
     //validate user
     const existingUser = await this.userRepository.findOneUser(user.username);
     if (!existingUser) {
