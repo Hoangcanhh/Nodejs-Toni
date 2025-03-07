@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from './user.dto';
+import { Users } from './users.entity';
 
 @Controller('/users')
 export class UsersController {
@@ -12,8 +13,8 @@ export class UsersController {
   }
 
   @Get('/usersid')
-  findOne(userName: string): Promise<UserDto | undefined> {
-    return this.usersService.findOne(userName);
+  findOne(userId: number): Promise<UserDto | undefined> {
+    return this.usersService.findOneById(userId);
   }
 
   @Post('/createUsers')
@@ -23,9 +24,8 @@ export class UsersController {
 
   @Patch('/updateUsers')
   update(
-    userid: number,
-    @Body() userDto: UserDto,
+    @Body() users : Users
   ): Promise<UserDto | undefined> {
-    return this.usersService.update(userid, userDto);
+    return this.usersService.update(users);
   }
 }

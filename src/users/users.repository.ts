@@ -15,7 +15,11 @@ export class UserRepository {
     return this.userRepository.find();
   }
 
-  async findOneUser(username: string): Promise<UserDto | undefined> {
+  async findUserById(userId: number): Promise<UserDto | undefined> {
+    return this.userRepository.findOne({ where: { userid: userId } });
+  }
+
+  async findUserByUsername(username: string): Promise<UserDto | undefined> {
     return this.userRepository.findOne({ where: { username } });
   }
 
@@ -28,14 +32,22 @@ export class UserRepository {
     }
     return this.userRepository.save(UserDto);
   }
+  //delete user
+  async deleteUser(userId: number): Promise<UserDto | undefined> {
+    const user = await this.userRepository.findOne({
+      where: { userid: userId },
+    });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    await this.userRepository.delete(userId);
+    return user;
+  }
 
-  async updateUser(
-    userid: number,
-    UserDto: UserDto,
-  ): Promise<UserDto | undefined> {
-    await this.userRepository.update(userid, UserDto);
+  async updateUser(users: Users): Promise<UserDto | undefined> {
+    await this.userRepository.update(users.userid, users);
     return this.userRepository.findOne({
-      where: { username: UserDto.username },
+      where: { userid: users.userid },
     });
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserDto } from './user.dto';
+import { Users } from './users.entity';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from './users.repository';
 
@@ -11,8 +12,11 @@ export class UsersService {
     return this.userRepository.findAllUsers();
   }
 
-  async findOne(username: string): Promise<UserDto | undefined> {
-    return this.userRepository.findOneUser(username);
+  async findOneById(userId: number): Promise<UserDto | undefined> {
+    return this.userRepository.findUserById(userId);
+  }
+  async findOneByUsername(username: string): Promise<UserDto | undefined> {
+    return this.userRepository.findUserByUsername(username);
   }
 
   async create(userDto: UserDto): Promise<UserDto> {
@@ -23,17 +27,28 @@ export class UsersService {
     });
     return this.userRepository.createUser(userDto);
   }
+  //delete user
+  async delete(userId: number): Promise<UserDto | undefined> {
+    const findUser = await this.userRepository.findUserById(userId);
+    if (!findUser) {
+      throw new Error('User not found');
+    }
+    return this.userRepository.deleteUser(userId);
+  }
 
-  async update(userId: number, user: UserDto): Promise<UserDto | undefined> {
-    //validate userDto
-    if (!user) {
-      throw new Error('User not found');
-    }
+  async update(user: Users): Promise<UserDto | undefined> {
     //validate user
-    const existingUser = await this.userRepository.findOneUser(user.username);
-    if (!existingUser) {
+    const findUser = await this.userRepository.findUserById(user.userid);
+    if (!findUser) {
       throw new Error('User not found');
     }
-    return this.userRepository.updateUser(userId, user);
+    //check userName
+    const existingUser = await this.userRepository.findUserByUsername(
+      user.username,
+    );
+    if (existingUser && existingUser.username !== user.username) {
+      throw new Error('Tên người dùng đã tồn tại');
+    }
+    return this.userRepository.updateUser(user);
   }
 }

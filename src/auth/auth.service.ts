@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, pass: string):  Promise<Omit<UserDto, 'password'> | null> {
-    const user = await this.userService.findOne(username);
+    const user = await this.userService.findOneByUsername(username);
     if (user && user.password === pass) {
       const { password, ...result } = user;
       return result;
@@ -23,7 +23,7 @@ export class AuthService {
   }
   async login(user: any): Promise<{ access_token: string }> {
     //validate user
-    const existingUser = await this.userService.findOne(user.username);
+    const existingUser = await this.userService.findOneByUsername(user.username);
     if (!existingUser) {
       throw new Error('User not found');
     }
@@ -33,7 +33,7 @@ export class AuthService {
     };
   }
   async register(user: any): Promise<any> {
-    const existingUser = await this.userService.findOne(user.username);
+    const existingUser = await this.userService.findOneByUsername(user.username);
     if (existingUser) {
       throw new Error('User already exists');
     }
