@@ -21,6 +21,12 @@ export class UsersService {
 
   async create(userDto: UserDto): Promise<UserDto> {
     const hashedPassword = await bcrypt.hash(userDto.password, 10);
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(userDto.password)) {
+      throw new Error(
+        'Password must contain at least 8 characters, including uppercase letters, lowercase letters, numbers and special characters.',
+      );
+    }
     await this.userRepository.createUser({
       ...userDto,
       password: hashedPassword,
@@ -36,9 +42,9 @@ export class UsersService {
     return this.userRepository.deleteUser(userId);
   }
 
-  async update(user: Users): Promise<UserDto | undefined> {
+  async update(id: number, user: UserDto): Promise<UserDto | undefined> {
     //validate user
-    const findUser = await this.userRepository.findUserById(user.userid);
+    const findUser = await this.userRepository.findUserById(id);
     if (!findUser) {
       throw new Error('User not found');
     }
@@ -47,8 +53,15 @@ export class UsersService {
       user.username,
     );
     if (existingUser && existingUser.username !== user.username) {
-      throw new Error('Tên người dùng đã tồn tại');
+      throw new Error('username already exists');
     }
-    return this.userRepository.updateUser(user);
+    //validate password, The condition to enter the world password is to have uppercase letters, lowercase letters, numbers and special characters.
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(user.password)) {
+      throw new Error(
+        'Password must contain at least 8 characters, including uppercase letters, lowercase letters, numbers and special characters.',
+      );
+    }
+    return this.userRepository.updateUser(id, user);
   }
 }

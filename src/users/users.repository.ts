@@ -44,10 +44,10 @@ export class UserRepository {
     return user;
   }
 
-  async updateUser(users: Users): Promise<UserDto | undefined> {
-    await this.userRepository.update(users.userid, users);
+  async updateUser(id: number, user: UserDto): Promise<UserDto | undefined> {
+    await this.userRepository.update(id, user);
     return this.userRepository.findOne({
-      where: { userid: users.userid },
+      where: { userid: id },
     });
   }
 }
