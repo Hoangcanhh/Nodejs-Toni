@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { BooksDto } from './books.dto';
-import { Books } from './books.entity';
 import { JwtAuthGuard } from '../auth/jwt_auth.guard';
 
 @Controller('books')
